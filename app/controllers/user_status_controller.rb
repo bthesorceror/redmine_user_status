@@ -6,7 +6,7 @@ class UserStatusController < ApplicationController
 
   def index
     @status = UserStatus.new
-    @users = User.active :conditions => {:type => 'User'}, :order => "lastname, firstname DESC"
+    @users = User.all :conditions => {:type => 'User'}, :order => "lastname, firstname DESC"
   end
 
   def create
