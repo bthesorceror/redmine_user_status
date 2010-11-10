@@ -1,0 +1,19 @@
+<% html_title "Latest updates"  %>
+<div>
+  <%= link_to "Show Feed", {:action => "show_feed", :key => User.current.rss_key}, :class => 'atom' %><br /> <br />
+  <h3>What are you doing?</h3>
+  <% form_for @status, :url => {:action => "create"} do |f|%>
+    <%= f.error_messages %>
+    <%= f.text_area :status, :style => "width:300px;height:100px;" %> <br />
+    <%= f.submit 'Submit'%>
+  <% end %>
+
+  <br />
+  <br />
+  <h3>Lastest Updates</h3>
+  <% @users.each do |user| %>
+    <% if !user.is_a?(AnonymousUser) %>
+      <%= render :partial => "show_update", :locals => {:user => user} %><br />
+    <% end%>
+  <% end %>
+</div>

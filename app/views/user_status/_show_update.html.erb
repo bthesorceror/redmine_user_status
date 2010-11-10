@@ -1,0 +1,5 @@
+<div class="status_div">
+<b style="font-size: 11pt;"><%= user.name %></b>
+(<%= link_to "history", :action => 'show_history', :user_id => user.id %>) <br />
+<%= last_update(user) %>
+</div>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Redmine Latest Statuses</title>
+    <description>Latest updates from redmine status plugin</description>
+    <pubDate><%= Time.now.strftime("%a, %d %b %Y %H:%M:%S %Z") rescue "Not Timestamp" %></pubDate>
+    <% @statuses.each do |st|  %>
+    <item>
+      <title>
+        Update for <%= @usernames[st.user_id] %> @ 
+        <%= st.created_at.strftime("%A %b %d - %I:%M %p") rescue "No Timestamp" %>
+      </title>
+      <description><%= h textilize(st.status) %></description>
+      <guid><%= st.id %></guid>
+      <pubDate><%= st.created_at.strftime("%a, %d %b %Y %H:%M:%S %Z") rescue (DateTime.new 1980,12,25).strftime("%a, %d %b %Y %H:%M:%S %Z")  %></pubDate>
+    </item>
+    <% end %>
+  </channel>
+</rss>
