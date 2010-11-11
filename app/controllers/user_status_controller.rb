@@ -39,6 +39,7 @@ class UserStatusController < ApplicationController
     @usernames = {}
     User.all.each{|u| @usernames[u.id] = u.name }
     render :layout => false
+    response.headers["Content-Type"] = "application/xml; charset=utf-8"
   end
  
   private

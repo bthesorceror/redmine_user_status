@@ -3,7 +3,7 @@
   <channel>
     <title>Redmine Latest Statuses</title>
     <description>Latest updates from redmine status plugin</description>
-    <link><%= url_for :controller => 'user_statuses', :action => 'index' %></link>
+    <link>https://github.com/bthesorceror/redmine_user_status</link>
     <pubDate><%= Time.now.strftime("%a, %d %b %Y %H:%M:%S %Z") rescue "Not Timestamp" %></pubDate>
     <% @statuses.each do |st|  %>
     <item>
