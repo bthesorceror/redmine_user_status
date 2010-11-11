@@ -35,11 +35,12 @@ class UserStatusController < ApplicationController
   end
 
   def show_feed
+    response.headers["Content-Type"] = "application/xml; charset=utf-8"
+
     @statuses = UserStatus.all :order => "created_at desc", :include => :user, :limit => 100
     @usernames = {}
     User.all.each{|u| @usernames[u.id] = u.name }
     render :layout => false
-    response.headers["Content-Type"] = "application/xml; charset=utf-8"
   end
  
   private
