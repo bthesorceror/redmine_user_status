@@ -4,6 +4,8 @@ class UserStatusController < ApplicationController
   before_filter :require_logged, :except => :show_feed
   before_filter :require_key, :only => :show_feed
 
+  accept_key_auth :show_feed
+
   def index
     @status = UserStatus.new
     @users = User.all :conditions => {:type => 'User'}, :order => "lastname, firstname DESC"
