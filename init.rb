@@ -1,6 +1,6 @@
 require 'redmine'
 require 'redcloth' # gem install RedCloth
-require 'user_patch.rb'
+# require 'user_patch.rb'
 
 Redmine::Plugin.register :redmine_user_status do
   name 'Redmine User Status plugin'
