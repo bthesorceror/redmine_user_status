@@ -1,2 +1,2 @@
-<p class="status_time"><b>Updated at: </b><%= status.created_at.strftime("%A %b %d @ %I:%M %p") rescue "No Timestamp"  %><p>
+<p class="status_time"><b>Updated at: </b><%= format_time(status.created_at) rescue "No Timestamp"  %><p>
 <%=textilizable(h status.status)  %>
