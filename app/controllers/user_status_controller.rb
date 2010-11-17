@@ -44,8 +44,7 @@ class UserStatusController < ApplicationController
 
     @statuses = UserStatus.all :order => "created_at desc", 
                                :include => :user, 
-                               :limit => 100,
-                               :include => :user
+                               :limit => 100
     render :layout => false
   end
  
