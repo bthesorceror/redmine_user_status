@@ -1,4 +1,10 @@
 <% html_title "Latest updates"  %>
+<style>
+  .status_div p {
+    display: inline;
+    <%= "padding-left: 40px;" if Setting.gravatar_enabled? %>
+  }
+</style>
 <div>
   <%= link_to "Show Feed", {:action => "show_feed", :key => User.current.rss_key, :format => 'atom'}, :class => 'atom' %><br /> <br />
   <h3>What are you doing?</h3>

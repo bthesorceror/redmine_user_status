@@ -8,7 +8,9 @@ class UserStatusController < ApplicationController
 
   def index
     @status = UserStatus.new
-    @users = User.all :conditions => {:type => 'User'}, :order => "lastname, firstname DESC"
+    @users = User.all :conditions => {:type => 'User'}, 
+                      :order => "lastname, firstname DESC",
+                      :include => :user_statuses
   end
 
   def create
@@ -28,7 +30,8 @@ class UserStatusController < ApplicationController
     @user = User.find :first, :conditions => {:id => params[:user_id]}
     @statuses = UserStatus.find :all, 
                                 :conditions => {:user_id => @user.id}, 
-                                :order => "created_at desc"
+                                :order => "created_at desc",
+                                :include => :user
                                 rescue ""
     unless @user
       flash[:error] = "Could not find user!"
@@ -39,9 +42,10 @@ class UserStatusController < ApplicationController
   def show_feed
     response.headers["Content-Type"] = "application/xml; charset=utf-8"
 
-    @statuses = UserStatus.all :order => "created_at desc", :include => :user, :limit => 100
-    @usernames = {}
-    User.all.each{|u| @usernames[u.id] = u.name }
+    @statuses = UserStatus.all :order => "created_at desc", 
+                               :include => :user, 
+                               :limit => 100,
+                               :include => :user
     render :layout => false
   end
  

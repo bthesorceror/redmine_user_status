@@ -1,4 +1,9 @@
 <% html_title "Update history for " + @user.name %>
+<% if Setting.gravatar_enabled? %>
+<%= avatar @user, :size => 75%>
+<br />
+<br />
+<% end %>
 <h3>Updates for <%= @user.name %></h3>
 <%= link_to "Back", :action => 'index'%>
 <br />

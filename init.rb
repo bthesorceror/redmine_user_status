@@ -1,6 +1,13 @@
 require 'redmine'
 require 'redcloth' # gem install RedCloth
-# require 'user_patch.rb'
+
+require 'dispatcher'
+require 'user_patch'
+require 'principal_patch'
+Dispatcher.to_prepare do
+  Principal.send(:include, PrincipalPatch) unless Principal.included_modules.include? PrincipalPatch
+  User.send(:include, UserPatch) unless User.included_modules.include? UserPatch
+end
 
 Redmine::Plugin.register :redmine_user_status do
   name 'Redmine User Status plugin'
@@ -11,3 +18,4 @@ Redmine::Plugin.register :redmine_user_status do
   menu :top_menu, :user_status, {:controller => 'user_status', :action => 'index'}, :caption => 'Statuses', :if => Proc.new { User.current.logged? }
 
 end
+

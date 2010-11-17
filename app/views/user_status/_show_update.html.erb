@@ -1,5 +1,11 @@
+
 <div class="status_div">
+<%= avatar(user, :size => 30)%>
 <b style="font-size: 11pt;"><%= user.name %></b>
 (<%= link_to "history", :action => 'show_history', :user_id => user.id %>) <br />
-<%= last_update(user) %>
+<% if user.last_update %>
+  <%= textilizable(h user.last_update.status) %></p>
+<% else %>
+  <p>No update found</p>
+<% end %>
 </div>
