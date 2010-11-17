@@ -4,6 +4,7 @@
 <b style="font-size: 11pt;"><%= user.name %></b>
 (<%= link_to "history", :action => 'show_history', :user_id => user.id %>) <br />
 <% if user.last_update %>
+  <div class="status_time"><b>Updated at: </b><%= user.last_update.created_at.strftime("%A %b %d @ %I:%M %p") rescue "No Timestamp"  %></div>
   <%= textilizable(h user.last_update.status) %></p>
 <% else %>
   <p>No update found</p>

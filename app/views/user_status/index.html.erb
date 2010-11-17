@@ -4,6 +4,10 @@
     display: inline;
     <%= "padding-left: 40px;" if Setting.gravatar_enabled? %>
   }
+
+  .status_time {
+    <%= "padding-left: 40px;" if Setting.gravatar_enabled? %>
+  }
 </style>
 <div>
   <%= link_to "Show Feed", {:action => "show_feed", :key => User.current.rss_key, :format => 'atom'}, :class => 'atom' %><br /> <br />
