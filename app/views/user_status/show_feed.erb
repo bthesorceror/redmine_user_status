@@ -8,7 +8,7 @@
     <% @statuses.each do |st|  %>
     <item>
       <title>
-        Update for <%= st.user.name %> @ 
+        Update for <%= st.user.name rescue "Unknown user"  %> @ 
         <%= st.created_at.strftime("%A %b %d - %I:%M %p") rescue "No Timestamp" %>
       </title>
       <description><%= h textilizable(st.status) %></description>
