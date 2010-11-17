@@ -18,7 +18,7 @@
   <br />
   <h3>Lastest Updates</h3>
   <% @users.each do |user| %>
-    <% if !user.is_a?(AnonymousUser) && user.active? %>
+    <% if !user.is_a?(AnonymousUser) && user.active? && user.last_update %>
       <%= render :partial => "show_update", :locals => {:user => user} %><br />
     <% end%>
   <% end %>
