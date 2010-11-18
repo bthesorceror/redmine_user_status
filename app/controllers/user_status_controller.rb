@@ -15,7 +15,7 @@ class UserStatusController < ApplicationController
 
   def create
     @status = UserStatus.create(params[:user_status])
-    @status.user = User.current
+    @status.user = @current_user
     @status.created_at = Time.now
     @status.updated_at = Time.now
     if @status.save
@@ -41,17 +41,19 @@ class UserStatusController < ApplicationController
 
   def show_feed
     response.headers["Content-Type"] = "application/xml; charset=utf-8"
-
-    @statuses = UserStatus.all :order => "created_at desc", 
-                               :include => :user, 
-                               :limit => 100
+    @statuses = UserStatus.history
     render :layout => false
+  end
+
+  def historic
+    @statuses = UserStatus.history
   end
  
   private
 
   def require_logged
-    unless User.current.logged?
+    @current_user = User.current
+    unless @current_user.logged?
       redirect_to root_path
     end
   end

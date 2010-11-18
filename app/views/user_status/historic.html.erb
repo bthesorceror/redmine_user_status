@@ -1,0 +1,24 @@
+<% html_title "Historic Update View" %>
+
+<%= render :partial => 'style' %>
+
+<div>
+  <%= link_to 'Show Feed', {:action => "show_feed", :key => User.current.rss_key , :format => 'atom' }, :class => 'atom'  %> |
+  <%= link_to 'Show Latest', {:action => "index"} %> <br /><br />
+
+  <h3>Historic View</h3>
+  <% if @statuses %>
+    <% @statuses.each do |st| %>
+      <div class="status_div">
+        <%= avatar(st.user, :size => 30) %>
+        <b style="font-size: 11pt;"><%= st.user.name %></b>
+        <div class="status_time">
+          <b>Updated at: </b><%= format_time(st.created_at) rescue "No Timestamp" %>
+        </div>
+        <%= textilizable(h st.status)%>
+      </div>
+    <% end %>
+  <% else %>
+    <div>No Statuses</div>
+  <% end %>
+</div>

@@ -16,7 +16,12 @@ module UserPatch
 
   module InstanceMethods
     def last_update
-      self.user_statuses.first :order => "created_at desc"
+      expiry = Setting.plugin_redmine_user_status['user_status_expiry'].to_i
+      if expiry && expiry != 0
+        self.user_statuses.first :conditions => ["created_at > ?", expiry.days.ago], :order => "created_at desc"
+      else
+        self.user_statuses.first :order => "created_at desc"
+      end
     end
   end
 end
