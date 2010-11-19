@@ -1,0 +1,10 @@
+<p>
+  <label>Status expire time</label>
+  <%= text_field_tag 'settings[user_status_expiry]', @settings['user_status_expiry'], :size => 8 %>
+  <em>(days)</em>
+</p>
+<p>
+  <label>Status history limit</label>
+  <%= text_field_tag 'settings[user_status_limit]', @settings['user_status_limit'], :size => 8 %>
+  <em>(defaults to 100)</em>
+</p>
