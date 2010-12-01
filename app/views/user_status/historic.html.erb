@@ -10,12 +10,19 @@
   <% if @statuses %>
     <% @statuses.each do |st| %>
       <div class="status_div">
+        <table><tr>
+        <td style="vertical-align: top;">
         <%= avatar(st.user, :size => 30) %>
+        </td>
+        <td>
         <b style="font-size: 11pt;"><%= st.user.name %></b>
         <div class="status_time">
           <b>Updated at: </b><%= format_time(st.created_at) rescue "No Timestamp" %>
         </div>
         <%= textilizable(h st.status)%>
+        </td>
+        </tr>
+        </table>
       </div>
     <% end %>
   <% else %>
