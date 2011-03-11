@@ -1,4 +1,5 @@
 <% html_title "Update history for " + @user.name %>
+<%= render :partial => 'style'%>
 <% if Setting.gravatar_enabled? %>
 <%= avatar @user, :size => 75%>
 <br />

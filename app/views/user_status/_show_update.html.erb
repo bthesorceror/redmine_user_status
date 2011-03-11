@@ -1,14 +1,13 @@
 
 <div class="status_div">
 <table> <tr><td style="vertical-align: top;">
-<%= avatar(user, :size => 30)%>
+<%= avatar(user, :size => 50)%>
 </td>
 <td>
-<b style="font-size: 11pt;"><%= user.name %></b>
-(<%= link_to "history", :action => 'show_history', :user_id => user.id %>) <br />
+<b style="font-size: 11pt;"><%= link_to user.name, :action => 'show_history', :user_id => user.id %></b><br />
 <% if user.last_update %>
-  <div class="status_time"><b>Updated at: </b><%= format_time(user.last_update.created_at) rescue "No Timestamp"  %></div>
-  <%= textilizable(h user.last_update.status) %></p>
+				<p class="status_message"><%= textilizable(h user.last_update.status) %></p>
+        <div class="status_time"><%= format_time(user.last_update.created_at) rescue "No Timestamp"  %></div>
 <% else %>
   <p>No update found</p>
 <% end %>

@@ -1,5 +1,24 @@
 <% html_title "Latest updates"  %>
 <%= render :partial => 'style' %>
+<script type="text/javascript">
+<!--
+function submitonenter(field,e)
+{
+	var keycode;
+	if (window.event) keycode = window.event.keyCode;
+	else if (e) keycode = e.which;
+	else return true;
+
+	if (keycode == 13)
+	{
+		field.form.submit();
+	  return false;
+	}
+	else
+		return true;
+}
+//-->
+</script>
 <div>
   <%= link_to "Show Feed", {:action => "show_feed", :key => User.current.rss_key, :format => 'atom'}, :class => 'atom' %> |
   <%= link_to "Historic View", {:action => "historic"} %>
@@ -7,8 +26,7 @@
   <h3>What are you doing?</h3>
   <% form_for @status, :url => {:action => "create"} do |f|%>
     <%= f.error_messages %>
-    <%= f.text_area :status, :style => "width:300px;height:100px;" %> <br />
-    <%= f.submit 'Submit'%>
+		<%= f.text_area :status, :style => "width:300px;height:100px;", :onKeyPress => "submitonenter(this, event)" %> <br />
   <% end %>
 
   <br />
