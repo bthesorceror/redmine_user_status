@@ -1,0 +1,17 @@
+
+<div id="status_<%= status.id %>" class="status_div">
+<table> <tr><td style="vertical-align: top;">
+<%= avatar(status.user, :size => 50)%>
+</td>
+<td>
+<b style="font-size: 11pt;"><%= link_to status.user.name, :action => 'show_history', :user_id => status.user.id %></b><br />
+<% if status %>
+				<p class="status_message"><%= textilizable(h status.status) %></p>
+        <div class="status_time"><%= format_time(status.created_at) rescue "No Timestamp"  %></div>
+<% else %>
+  <p>No update found</p>
+<% end %>
+</td>
+</tr>
+</table>
+</div>

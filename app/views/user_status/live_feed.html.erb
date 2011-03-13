@@ -1,7 +1,22 @@
 <% html_title "Latest updates"  %>
 <%= render :partial => 'style' %>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/jquery-ui.js"></script>
+
 <script type="text/javascript">
 <!--
+
+$j = jQuery.noConflict();
+
+function updatefeed() {
+	$j.getScript("<%= url_for :action => "live_feed", :format => "js"  %>");
+}
+
+$j(document).ready(function () {
+	myInterval = setInterval("updatefeed()", 30000);
+});
+
 function submitonenter(field,e)
 {
 	var keycode;
@@ -22,20 +37,20 @@ function submitonenter(field,e)
 <div>
   <%= link_to "Show Feed", {:action => "show_feed", :key => User.current.rss_key, :format => 'atom'}, :class => 'atom' %> |
 	<%= link_to "Historic View", {:action => "historic"} %> |
-	<%= link_to "Live Feed", {:action => "live_feed"} %>
+	<%= link_to "Show Latest", {:action => "index"} %> 
   <br /> <br />
   <h3>What are you doing?</h3>
-  <% form_for @status, :url => {:action => "create"} do |f|%>
+	<% form_for @status, :url => {:action => "create", :mode => "live"} do |f|%>
     <%= f.error_messages %>
 		<%= f.text_area :status, :style => "width:300px;height:100px;", :onKeyPress => "submitonenter(this, event)" %> <br />
   <% end %>
 
   <br />
   <br />
-  <h3>Lastest Updates</h3>
-  <% @users.each do |user| %>
-    <% if !user.is_a?(AnonymousUser) && user.active? && user.last_update %>
-      <%= render :partial => "show_update", :locals => {:user => user} %><br />
-    <% end%>
-  <% end %>
+  <h3>Live Feed</h3>
+  <div id="feed_container">
+	<% @statuses.each do |st| %>
+		<%= render :partial => "show_live_update", :locals => {:status => st} %> <br />
+	<% end %>	
+	</div> 
 </div>

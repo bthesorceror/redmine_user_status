@@ -1,0 +1,5 @@
+<% @statuses.each do |st| %>
+				$j("#feed_container").prepend("<%= escape_javascript(render :partial => "show_live_update", :locals => {:status => st}) %><br />");
+				$j("#status_<%= st.id %>").effect("highlight", {}, 3000);
+<% end %>
+$j(".flash_notice").remove();
