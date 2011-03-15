@@ -24,9 +24,9 @@ class UserStatusController < ApplicationController
       flash[:error] = "Could not save update!"
     end
 		if params[:mode] == "live"
-			redirect_to :action => "live_feed"
+		  redirect_to :action => "live_feed"
 		else
-    	redirect_to :action => 'index'
+    	          redirect_to :action => 'index'
 		end
   end
 
@@ -54,19 +54,19 @@ class UserStatusController < ApplicationController
   end
 
 	def live_feed
-			unless params[:format] == "js" 
-				@status = UserStatus.new
-				@statuses = UserStatus.all :order => "created_at DESC",
-															 		 :limit => 100,
-															     :include => :user
-				session[:last_status_check] = @statuses.first.created_at if @statuses.size > 0
-			else
-				@old_time = session[:last_status_check]
-				@statuses = UserStatus.all :conditions => ["created_at > ?", @old_time],
-																	 :order => "created_at DESC"
-				session[:last_status_check] = @statuses.first.created_at if @statuses.size > 0
-				render :template => "user_status/live_feed_js", :layout => false
-			end
+	  unless params[:format] == "js" 
+	    @status = UserStatus.new
+	    @statuses = UserStatus.all :order => "created_at DESC",
+		                           :limit => 100,
+	    					       :include => :user
+	    session[:last_status_check] = @statuses.first.created_at if @statuses.size > 0
+	  else
+	    @old_time = session[:last_status_check]
+	    @statuses = UserStatus.all :conditions => ["created_at > ?", @old_time],
+	    						 :order => "created_at DESC"
+	    session[:last_status_check] = @statuses.first.created_at if @statuses.size > 0
+	    render :template => "user_status/live_feed_js", :layout => false
+	  end
 	end
  
   private

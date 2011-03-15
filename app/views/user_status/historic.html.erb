@@ -4,6 +4,7 @@
 
 <div>
   <%= link_to 'Show Feed', {:action => "show_feed", :key => User.current.rss_key , :format => 'atom' }, :class => 'atom'  %> |
+  <%= link_to 'Live Feed', {:action => "live_feed"} %> |
   <%= link_to 'Show Latest', {:action => "index"} %> <br /><br />
 
   <h3>Historic View</h3>
