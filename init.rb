@@ -1,5 +1,5 @@
 require 'redmine'
-require 'redcloth' # gem install RedCloth
+# require 'redcloth' # gem install RedCloth
 
 require 'dispatcher'
 require 'user_patch'
