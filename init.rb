@@ -1,4 +1,4 @@
-require 'redmine'
+require 'redmine' 
 # require 'redcloth' # gem install RedCloth
 
 require 'dispatcher'
@@ -19,7 +19,7 @@ Redmine::Plugin.register :redmine_user_status do
   settings :default => {'user_status_limit' => 100}, :partial => 'settings/user_status_settings'
 
   permission :feed_view, {:user_status => [:show_feed]}, :public => true
-  menu :top_menu, :user_status, {:controller => 'user_status', :action => 'index'}, :caption => 'Statuses', :if => Proc.new { User.current.logged? }
+  menu :top_menu, :user_status, {:controller => 'user_status', :action => 'index'}, :caption => :top_menu_caption, :if => Proc.new { User.current.logged? }
 
 end
 

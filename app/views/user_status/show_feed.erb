@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
   <channel>
-    <title>Redmine Latest Statuses</title>
-    <description>Latest updates from redmine status plugin</description>
+    <title><%= l(:l_rss_title) %></title>
+    <description><%= l(:l_rss_description) %></description>
     <link><%= root_path %></link>
-    <pubDate><%= Time.now.strftime("%a, %d %b %Y %H:%M:%S %Z") rescue "Not Timestamp" %></pubDate>
+    <pubDate><%= Time.now.strftime("%a, %d %b %Y %H:%M:%S %Z") rescue l(:l_no_timestamp) %></pubDate>
     <% @statuses.each do |st|  %>
     <item>
       <title>
-        Update for <%= st.user.name rescue "Unknown user"  %> @ 
-        <%= st.created_at.strftime("%A %b %d - %I:%M %p") rescue "No Timestamp" %>
+        <%= l(:l_rss_update_for) %> <%= st.user.name rescue l(:l_unknown_user)  %> @ 
+        <%= st.created_at.strftime("%A %b %d - %I:%M %p") rescue l(:l_no_timestamp) %>
       </title>
       <description><%= h textilizable(st.status) %></description>
       <guid><%= st.id %></guid>

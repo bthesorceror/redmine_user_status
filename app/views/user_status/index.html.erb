@@ -1,38 +1,20 @@
-<% html_title "Latest updates"  %>
+<% html_title l(:l_latest_updates)  %>
 <%= render :partial => 'style' %>
-<script type="text/javascript">
-<!--
-function submitonenter(field,e)
-{
-	var keycode;
-	if (window.event) keycode = window.event.keyCode;
-	else if (e) keycode = e.which;
-	else return true;
-
-	if (keycode == 13)
-	{
-		field.form.submit();
-	  return false;
-	}
-	else
-		return true;
-}
-//-->
-</script>
 <div>
-  <%= link_to "Show Feed", {:action => "show_feed", :key => User.current.rss_key, :format => 'atom'}, :class => 'atom' %> |
-	<%= link_to "Historic View", {:action => "historic"} %> |
-	<%= link_to "Live Feed", {:action => "live_feed"} %>
+  <%= link_to l(:l_show_feed), {:action => "show_feed", :key => User.current.rss_key , :format => 'atom' }, :class => 'atom'  %> |
+  <%= link_to l(:l_live_feed), {:action => "live_feed"} %> |
+  <%= link_to l(:l_show_latest), {:action => "index"} %>
   <br /> <br />
-  <h3>What are you doing?</h3>
+  <h3><%= l(:l_what_are_you_doing) %></h3>
   <% form_for @status, :url => {:action => "create"} do |f|%>
     <%= f.error_messages %>
-		<%= f.text_area :status, :style => "width:300px;height:100px;", :onKeyPress => "submitonenter(this, event)" %> <br />
+		<%= f.text_area :status, :style => "width:300px;height:100px;" %> <br />
+    <%= submit_tag l(:l_button_submit) %>
   <% end %>
 
   <br />
   <br />
-  <h3>Latest Updates</h3>
+  <h3><%= l(:l_latest_updates) %></h3>
   <% @users.each do |user| %>
     <% if !user.is_a?(AnonymousUser) && user.active? && user.last_update %>
       <%= render :partial => "show_update", :locals => {:user => user} %><br />

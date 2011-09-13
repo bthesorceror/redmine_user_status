@@ -19,9 +19,9 @@ class UserStatusController < ApplicationController
     @status.created_at = Time.now
     @status.updated_at = Time.now
     if @status.save
-      flash[:notice] = "Status saved"
+      flash[:notice] = l(:l_flash_status_saved)
     else
-      flash[:error] = "Could not save update!"
+      flash[:error] = l(:l_flash_could_not_save_update)
     end
 		if params[:mode] == "live"
 		  redirect_to :action => "live_feed"
@@ -38,7 +38,7 @@ class UserStatusController < ApplicationController
                                 :include => :user
                                 rescue ""
     unless @user
-      flash[:error] = "Could not find user!"
+      flash[:error] = l(:l_flash_could_not_find_user)
       redirect_to :action => 'index'
     end
   end
