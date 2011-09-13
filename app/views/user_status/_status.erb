@@ -1,4 +1,4 @@
 <!-- <b style="font-size: 11pt;"><%= status.user.name %></b> -->
 <div class="status_message"><%=textilizable(h status.status) %> </div>
-<div class="status_time"><%= format_time(status.created_at) rescue "No Timestamp"  %></div>
+<div class="status_time"><%= format_time(status.created_at) rescue l(:l_no_timestamp) %></div>
 <br />
