@@ -13,7 +13,7 @@ Redmine::Plugin.register :redmine_user_status do
   name 'Redmine User Status plugin'
   author 'Brandon Farmer'
   description 'Allows you to find out what co workers are doing'
-  version '0.0.2'
+  version '0.0.3'
  
   settings :default => {'user_status_expiry' => ''}, :partial => 'settings/user_status_settings'
   settings :default => {'user_status_limit' => 100}, :partial => 'settings/user_status_settings'
