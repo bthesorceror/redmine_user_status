@@ -1,33 +1,14 @@
 <% html_title "Historic Update View" %>
+<%= render "header" %>
 
-<%= render :partial => 'style' %>
+<p>
+  <%= link_to 'RSS', {:action => "show_feed", :key => User.current.rss_key , :format => 'atom' }, :class => 'atom'  %> |
+  <%= link_to 'Live Updating', {:action => "live_feed"} %> |
+  <%= link_to 'Latest Per User', {:action => "index"} %>
+</p>
 
-<div>
-  <%= link_to 'Show Feed', {:action => "show_feed", :key => User.current.rss_key , :format => 'atom' }, :class => 'atom'  %> |
-  <%= link_to 'Live Feed', {:action => "live_feed"} %> |
-  <%= link_to 'Show Latest', {:action => "index"} %> <br /><br />
+<%= render "form" %>
 
-  <h3>Historic View</h3>
-  <% if @statuses %>
-    <% @statuses.each do |st| %>
-      <div class="status_div">
-        <table><tr>
-        <td style="vertical-align: top;">
-        <%= avatar(st.user, :size => 50) %>
-        </td>
-        <td>
-        <b style="font-size: 11pt;"><%= st.user.name %></b>
-				<p class="status_message"><%= textilizable(h st.status)%></p>
- 				<div class="status_time">
-          <%= format_time(st.created_at) rescue "No Timestamp" %>
-        </div>
+<h3>Historic Order</h3>
+<%= render "list" %>
 
-        </td>
-        </tr>
-        </table>
-      </div>
-    <% end %>
-  <% else %>
-    <div>No Statuses</div>
-  <% end %>
-</div>

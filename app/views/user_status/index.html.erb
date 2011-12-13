@@ -1,41 +1,35 @@
 <% html_title "Latest updates"  %>
-<%= render :partial => 'style' %>
-<script type="text/javascript">
-<!--
-function submitonenter(field,e)
-{
-	var keycode;
-	if (window.event) keycode = window.event.keyCode;
-	else if (e) keycode = e.which;
-	else return true;
-
-	if (keycode == 13)
-	{
-		field.form.submit();
-	  return false;
-	}
-	else
-		return true;
-}
-//-->
-</script>
+<%= render "header" %>
 <div>
-  <%= link_to "Show Feed", {:action => "show_feed", :key => User.current.rss_key, :format => 'atom'}, :class => 'atom' %> |
-	<%= link_to "Historic View", {:action => "historic"} %> |
-	<%= link_to "Live Feed", {:action => "live_feed"} %>
-  <br /> <br />
-  <h3>What are you doing?</h3>
-  <% form_for @status, :url => {:action => "create"} do |f|%>
-    <%= f.error_messages %>
-		<%= f.text_area :status, :style => "width:300px;height:100px;", :onKeyPress => "submitonenter(this, event)" %> <br />
-  <% end %>
+  <p>
+    <%= link_to "RSS", {:action => "show_feed", :key => User.current.rss_key, :format => 'atom'}, :class => 'atom' %> |
+	  <%= link_to "Historical Order", {:action => "historic"} %> |
+	  <%= link_to "Live Updating", {:action => "live_feed"} %>
+	</p>
 
-  <br />
-  <br />
-  <h3>Latest Updates</h3>
+  <%= render "form" %>
+
+  <h3>Latest Updates Per User</h3>
   <% @users.each do |user| %>
-    <% if !user.is_a?(AnonymousUser) && user.active? && user.last_update %>
-      <%= render :partial => "show_update", :locals => {:user => user} %><br />
+    <% if user.last_update %>
+      <div class="status_div">
+        <table> 
+          <tr>
+            <td class="avatar">
+              <%= avatar(user, :size => 50)%>
+            </td>
+            <td>
+              <p class="history_link"><%= link_to user.name, :action => 'show_history', :user_id => user.id %></p>
+              <% if user.last_update %>
+      				  <p class="status_message"><%= textilizable(h user.last_update) %></p>
+                <div class="status_time"><%= timeago(user.last_update.created_at) %></div>
+              <% else %>
+                <p>No update found</p>
+              <% end %>
+            </td>
+          </tr>
+        </table>
+      </div>
     <% end%>
   <% end %>
 </div>

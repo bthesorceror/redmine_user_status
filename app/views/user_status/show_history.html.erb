@@ -1,0 +1,16 @@
+<% html_title "Update history for #{@user.name}" %>
+
+<%= render "header" %>
+
+<% if Setting.gravatar_enabled? %>
+  <p>
+    <%= avatar @user, :size => 75%>
+  </p>
+<% end %>
+
+<h3>Updates for <%= @user.name %></h3>
+<p>
+  <%= link_to "Back", request.referer %>
+</p>
+
+<%= render "list" %>

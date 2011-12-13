@@ -3,40 +3,28 @@ class UserStatusController < ApplicationController
 
   before_filter :require_logged, :except => :show_feed
   before_filter :require_key, :only => :show_feed
-
+  before_filter :create_blank_status, :only => [:live_feed, :index, :historic]
+  
   accept_key_auth :show_feed
 
   def index
-    @status = UserStatus.new
-    @users = User.all :conditions => {:type => 'User'}, 
-                      :order => "lastname, firstname DESC",
-                      :include => :user_statuses
+    @users = User.all_with_statuses
   end
 
   def create
     @status = UserStatus.create(params[:user_status])
     @status.user = @current_user
-    @status.created_at = Time.now
-    @status.updated_at = Time.now
     if @status.save
       flash[:notice] = "Status saved"
     else
       flash[:error] = "Could not save update!"
     end
-		if params[:mode] == "live"
-		  redirect_to :action => "live_feed"
-		else
-    	          redirect_to :action => 'index'
-		end
+		redirect_to(request.referer)
   end
 
   def show_history
-    @user = User.find :first, :conditions => {:id => params[:user_id]}
-    @statuses = UserStatus.find :all, 
-                                :conditions => {:user_id => @user.id}, 
-                                :order => "created_at desc",
-                                :include => :user
-                                rescue ""
+    @user = User.find(params[:user_id])
+    @statuses = UserStatus.user_history(@user.id)                           
     unless @user
       flash[:error] = "Could not find user!"
       redirect_to :action => 'index'
@@ -55,19 +43,20 @@ class UserStatusController < ApplicationController
 
 	def live_feed
 	  unless params[:format] == "js" 
-	    @status = UserStatus.new
 	    @statuses = UserStatus.history
-	    session[:last_status_check] = @statuses.first.created_at if @statuses.size > 0
+	    session[:last_status_id] = @statuses.size > 0 ? @statuses.first.id : 0
 	  else
-	    @old_time = session[:last_status_check]
-	    @statuses = UserStatus.all :conditions => ["created_at > ?", @old_time],
-	    						   :order => "created_at DESC"
-	    session[:last_status_check] = @statuses.first.created_at if @statuses.size > 0
+	    @statuses = UserStatus.more_recent_than(session[:last_status_id])
+	    session[:last_status_id] = @statuses.size > 0 ? @statuses.first.id : session[:last_status_id]
 	    render :template => "user_status/live_feed_js", :layout => false
 	  end
 	end
  
   private
+
+  def create_blank_status
+    @status = UserStatus.new
+  end
 
   def require_logged
     @current_user = User.current
@@ -77,8 +66,8 @@ class UserStatusController < ApplicationController
   end
 
   def require_key
-    @key = params[:key]
-    unless @key && User.find_by_rss_key(@key)
+    @current_user = User.find_by_rss_key(params[:key]) if params[:key]
+    unless @current_user
       render :inline => 'Invalid Key'
       return false
     end

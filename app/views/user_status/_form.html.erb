@@ -1,0 +1,11 @@
+<div class="post_status_form">
+  <h3>What are you doing?</h3>
+  <% form_for @status, :url => {:action => "create"} do |f|%>
+	  <p>
+	    <%= f.text_area :status, :class => "status_box" %>
+	  </p>
+	  <p>
+	    <%= f.submit "Post Status"%>
+	  </p>
+  <% end %>
+</div>
