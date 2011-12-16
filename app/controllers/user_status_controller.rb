@@ -11,8 +11,7 @@ class UserStatusController < ApplicationController
   end
 
   def create
-    @status = UserStatus.new(params[:user_status])
-    @status.user = @current_user
+    @status = @current_user.user_statuses.build(params[:user_status])
     if @status.save
       flash[:notice] = "Status saved"
     else
