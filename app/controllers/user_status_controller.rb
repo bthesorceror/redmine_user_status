@@ -1,10 +1,8 @@
 class UserStatusController < ApplicationController
   unloadable
 
-  before_filter :require_logged, :except => :show_feed
-  before_filter :require_key, :only => :show_feed
-  before_filter :create_blank_status, :only => [:live_feed, :index, :historic]
-  
+  before_filter :require_group
+  before_filter :create_blank_status, :only => [:index, :historic, :live_feed]
   accept_key_auth :show_feed
 
   def index
@@ -20,6 +18,16 @@ class UserStatusController < ApplicationController
       flash[:error] = "Could not save update!"
     end
 		redirect_to(request.referer)
+  end
+
+  def create_from_issue
+    status = @current_user.create_status_from_issue(params[:issue_id])
+    if status and status.save
+      flash[:notice] = "Status saved"
+    else
+      flash[:eror] = "Could not save update!"
+    end
+    redirect_to(request.referer)
   end
 
   def show_history
@@ -58,18 +66,11 @@ class UserStatusController < ApplicationController
     @status = UserStatus.new
   end
 
-  def require_logged
+  def require_group
     @current_user = User.current
-    unless @current_user.logged?
+    unless @current_user.logged? && @current_user.has_user_status_group?
+      flash[:error] = "You are not authorized."
       redirect_to root_path
-    end
-  end
-
-  def require_key
-    @current_user = User.find_by_rss_key(params[:key]) if params[:key]
-    unless @current_user
-      render :inline => 'Invalid Key'
-      return false
     end
   end
 
