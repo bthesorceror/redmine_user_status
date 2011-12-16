@@ -20,5 +20,4 @@ module UserStatusHelper
       user.name
     end
   end
-
 end

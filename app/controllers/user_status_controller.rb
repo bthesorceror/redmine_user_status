@@ -2,7 +2,8 @@ class UserStatusController < ApplicationController
   unloadable
 
   before_filter :require_group
-  before_filter :create_blank_status, :only => [:index, :historic, :live_feed]
+  before_filter :create_blank_status,
+    :only => [:index, :historic, :live_feed]
   accept_key_auth :show_feed
 
   def index
@@ -10,7 +11,7 @@ class UserStatusController < ApplicationController
   end
 
   def create
-    @status = UserStatus.create(params[:user_status])
+    @status = UserStatus.new(params[:user_status])
     @status.user = @current_user
     if @status.save
       flash[:notice] = "Status saved"
@@ -21,8 +22,7 @@ class UserStatusController < ApplicationController
   end
 
   def create_from_issue
-    status = @current_user.create_status_from_issue(params[:issue_id])
-    if status and status.save
+    if @current_user.create_status_from_issue(params[:issue_id])
       flash[:notice] = "Status saved"
     else
       flash[:eror] = "Could not save update!"
@@ -32,7 +32,7 @@ class UserStatusController < ApplicationController
 
   def show_history
     @user = User.find(params[:user_id])
-    @statuses = UserStatus.user_history(@user.id)                           
+    @statuses = UserStatus.user_history(@user.id)
     unless @user
       flash[:error] = "Could not find user!"
       redirect_to :action => 'index'
@@ -59,7 +59,7 @@ class UserStatusController < ApplicationController
 	    render :template => "user_status/live_feed_js", :layout => false
 	  end
 	end
- 
+
   private
 
   def create_blank_status

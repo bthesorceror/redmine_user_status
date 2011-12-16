@@ -27,8 +27,9 @@ module UserPatch
         status = UserStatus.new
         status.status = "I am currently working on ##{issue.id}"
         status.user = self
+        return status.save
       end
-      return status
+      return false
     end
 
     def has_user_status_group?
