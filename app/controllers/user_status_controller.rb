@@ -3,7 +3,7 @@ class UserStatusController < ApplicationController
 
   before_filter :require_group
   before_filter :create_blank_status,
-    :only => [:index, :historic, :live_feed]
+                :only => [:index, :historic, :live_feed]
   accept_key_auth :show_feed
 
   def index
