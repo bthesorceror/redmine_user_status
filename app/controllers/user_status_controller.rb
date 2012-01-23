@@ -1,42 +1,37 @@
 class UserStatusController < ApplicationController
   unloadable
 
-  before_filter :require_logged, :except => :show_feed
-  before_filter :require_key, :only => :show_feed
-
+  before_filter :require_group
+  before_filter :create_blank_status,
+                :only => [:index, :historic, :live_feed]
   accept_key_auth :show_feed
 
   def index
-    @status = UserStatus.new
-    @users = User.all :conditions => {:type => 'User'}, 
-                      :order => "lastname, firstname DESC",
-                      :include => :user_statuses
+    @users = User.all_with_statuses
   end
 
   def create
-    @status = UserStatus.create(params[:user_status])
-    @status.user = @current_user
-    @status.created_at = Time.now
-    @status.updated_at = Time.now
+    @status = @current_user.user_statuses.build(params[:user_status])
     if @status.save
       flash[:notice] = l(:l_flash_status_saved)
     else
       flash[:error] = l(:l_flash_could_not_save_update)
     end
-		if params[:mode] == "live"
-		  redirect_to :action => "live_feed"
-		else
-    	          redirect_to :action => 'index'
-		end
+		redirect_to(request.referer)
+  end
+
+  def create_from_issue
+    if @current_user.create_status_from_issue(params[:issue_id])
+      flash[:notice] = "Status saved"
+    else
+      flash[:eror] = "Could not save update!"
+    end
+    redirect_to(request.referer)
   end
 
   def show_history
-    @user = User.find :first, :conditions => {:id => params[:user_id]}
-    @statuses = UserStatus.find :all, 
-                                :conditions => {:user_id => @user.id}, 
-                                :order => "created_at desc",
-                                :include => :user
-                                rescue ""
+    @user = User.find(params[:user_id])
+    @statuses = UserStatus.user_history(@user.id)
     unless @user
       flash[:error] = l(:l_flash_could_not_find_user)
       redirect_to :action => 'index'
@@ -55,32 +50,26 @@ class UserStatusController < ApplicationController
 
 	def live_feed
 	  unless params[:format] == "js" 
-	    @status = UserStatus.new
 	    @statuses = UserStatus.history
-	    session[:last_status_check] = @statuses.first.created_at if @statuses.size > 0
+	    session[:last_status_id] = @statuses.size > 0 ? @statuses.first.id : 0
 	  else
-	    @old_time = session[:last_status_check]
-	    @statuses = UserStatus.all :conditions => ["created_at > ?", @old_time],
-	    						   :order => "created_at DESC"
-	    session[:last_status_check] = @statuses.first.created_at if @statuses.size > 0
+	    @statuses = UserStatus.more_recent_than(session[:last_status_id])
+	    session[:last_status_id] = @statuses.size > 0 ? @statuses.first.id : session[:last_status_id]
 	    render :template => "user_status/live_feed_js", :layout => false
 	  end
 	end
- 
+
   private
 
-  def require_logged
-    @current_user = User.current
-    unless @current_user.logged?
-      redirect_to root_path
-    end
+  def create_blank_status
+    @status = UserStatus.new
   end
 
-  def require_key
-    @key = params[:key]
-    unless @key && User.find_by_rss_key(@key)
-      render :inline => 'Invalid Key'
-      return false
+  def require_group
+    @current_user = User.current
+    unless @current_user.logged? && @current_user.has_user_status_group?
+      flash[:error] = "You are not authorized."
+      redirect_to root_path
     end
   end
 

@@ -1,41 +1,29 @@
 <% html_title l(:l_latest_updates)  %>
-<%= render :partial => 'style' %>
-
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.js"></script>
-<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.10/jquery-ui.js"></script>
-<%= javascript_include_tag "jquery.timeago.js", :plugin => "redmine_user_status" %>
+<%= render "header" %>
 <script type="text/javascript">
 <!--
 
-$j = jQuery.noConflict();
-
 function updatefeed() {
-	$j.getScript("<%= url_for :action => "live_feed", :format => "js"  %>");
+	$JQuery.getScript("<%= url_for :action => "live_feed", :format => "js"  %>");
 }
 
-$j(document).ready(function () {
+$JQuery(document).ready(function () {
 	myInterval = setInterval("updatefeed()", 30000);
 });
-//-->
+-->
 </script>
-<div>
+
+<p>
   <%= link_to l(:l_show_feed), {:action => "show_feed", :key => User.current.rss_key , :format => 'atom' }, :class => 'atom'  %> |
   <%= link_to l(:l_live_feed), {:action => "live_feed"} %> |
   <%= link_to l(:l_show_latest), {:action => "index"} %> 
-  <br /> <br />
-  <h3><%= l(:l_what_are_you_doing) %></h3>
-	<% form_for @status, :url => {:action => "create", :mode => "live"} do |f|%>
-    <%= f.error_messages %>
-		<%= f.text_area :status, :style => "width:300px;height:100px;" %> <br />
-    <%= submit_tag l(:l_button_submit) %>
-  <% end %>
+</p>
 
-  <br />
-  <br />
+<%= render "form" %>
+
+<p>
   <h3><%= l(:l_live_feed) %></h3>
   <div id="feed_container">
-	<% @statuses.each do |st| %>
-		<%= render :partial => "show_live_update", :locals => {:status => st} %> <br />
-	<% end %>	
+	  <%= render "list" %>
 	</div> 
-</div>
+</p>

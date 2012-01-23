@@ -8,3 +8,12 @@
   <%= text_field_tag 'settings[user_status_limit]', @settings['user_status_limit'], :size => 8 %>
   <em>(<%= l(:l_defaults_to) %> 100)</em>
 </p>
+<p>
+  <label><%= l(:l_allowed_roles) %></label>
+  <%= select_tag "settings[user_status_groups]", 
+  		options_from_collection_for_select(Group.all, 
+  		"id", "name",
+  		:selected => selected_groups), 
+  		:multiple => true %>
+  <em>(Roles allowed to view and submit user statuses)</em>
+</p>

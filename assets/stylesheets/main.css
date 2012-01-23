@@ -1,0 +1,25 @@
+p.history_link, p.user_name {
+	font-size: 11pt;
+	font-weight: bold;
+}
+
+.status_time {
+	color: #999999;
+	font-style: italic;
+}	
+.status_message, .status_time {
+	padding-top: 3px;
+}
+
+div.status_message p {
+	display: inline;
+}
+
+td.avatar {
+	vertical-align: top;
+}
+
+.status_box {
+	width:300px;
+	height:100px;
+}

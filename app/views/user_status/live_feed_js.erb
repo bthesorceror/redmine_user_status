@@ -1,5 +1,7 @@
-<% @statuses.each do |st| %>
-				$j("#feed_container").prepend("<%= escape_javascript(render :partial => "show_live_update", :locals => {:status => st}) %><br />");
-				$j("#status_<%= st.id %>").effect("highlight", {}, 3000);
+$JQuery("#feed_container").prepend("<%= escape_javascript(render 'list') %>");
+<% @statuses.each do |status| %>
+	$JQuery("#status_<%= status.id %>").effect("highlight", {}, 3000);
+	$JQuery("#status_<%= status.id %> .timeago").timeago();
 <% end %>
-$j(".flash_notice").remove();
+$JQuery(".flash_notice").remove();
+$JQuery(".notice").remove();
