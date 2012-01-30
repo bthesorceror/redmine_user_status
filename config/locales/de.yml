@@ -25,3 +25,4 @@ de:
   l_flash_could_not_find_user: "Benutzer konnte nicht gefunden werden!"
   l_update_per_user: "Updates pro Benutzer"
   l_allowed_roles: "Zulässige Rollen"
+  l_issue_updates_status: "Ich arbeite an diesem Ticket! (diesen Status publizieren)"

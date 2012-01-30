@@ -25,3 +25,4 @@ en:
   l_flash_could_not_find_user: "Could not find user!"
   l_update_per_user: "Latest Updates Per User"
   l_allowed_roles: "Allowed Roles"
+  l_issue_updates_status: "I'm Working on This! (updates user status)"
