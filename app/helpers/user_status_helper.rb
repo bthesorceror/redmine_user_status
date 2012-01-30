@@ -20,4 +20,14 @@ module UserStatusHelper
       user.name
     end
   end
+
+  def delete_link(status)
+    if status.has_delete_rights?(User.current)
+      content_tag :small do
+        link_to("Delete", {:controller => :user_status, :action => :destroy, :id => status.id}, 
+              :method => :delete, :style => "color: red;")
+      end
+    end
+  end
+
 end

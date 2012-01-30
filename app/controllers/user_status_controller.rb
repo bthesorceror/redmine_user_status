@@ -4,6 +4,8 @@ class UserStatusController < ApplicationController
   before_filter :require_group
   before_filter :create_blank_status,
                 :only => [:index, :historic, :live_feed]
+  before_filter :require_delete_rights, :only => :destroy
+
   accept_key_auth :show_feed
 
   def index
@@ -18,6 +20,12 @@ class UserStatusController < ApplicationController
       flash[:error] = "Could not save update!"
     end
 		redirect_to(request.referer)
+  end
+
+  def destroy
+    @status.destroy
+    flash[:notice] = "Status has been deleted"
+    redirect_to(request.referer)
   end
 
   def create_from_issue
@@ -71,6 +79,14 @@ class UserStatusController < ApplicationController
       flash[:error] = "You are not authorized."
       redirect_to root_path
     end
+  end
+
+  def require_delete_rights
+    @status = UserStatus.find(params[:id])
+    unless @status && @status.has_delete_rights?(User.current)
+      flash[:error] = "You cannot delete this status"
+      redirect_to root_path
+    end 
   end
 
 end
