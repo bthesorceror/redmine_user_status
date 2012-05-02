@@ -9,6 +9,10 @@ class UserStatus < ActiveRecord::Base
                                                   :order => "created_at desc",
                                                   :include => :user }}
 
+  def has_delete_rights?(user)
+    user.admin? || self.user_id == user.id
+  end
+
   def self.history
     limit = Setting.plugin_redmine_user_status['user_status_limit'].to_i
     @statuses = self.all  :order => "created_at desc", 
