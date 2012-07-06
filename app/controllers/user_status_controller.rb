@@ -6,7 +6,7 @@ class UserStatusController < ApplicationController
                 :only => [:index, :historic, :live_feed]
   before_filter :require_delete_rights, :only => :destroy
 
-  accept_key_auth :show_feed
+  accept_rss_auth :show_feed
 
   def index
     @users = User.all_with_statuses
