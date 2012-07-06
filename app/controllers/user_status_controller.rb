@@ -6,7 +6,7 @@ class UserStatusController < ApplicationController
                 :only => [:index, :historic, :live_feed]
   before_filter :require_delete_rights, :only => :destroy
 
-  accept_key_auth :show_feed
+  accept_rss_auth :show_feed
 
   def index
     @users = User.all_with_statuses
@@ -15,9 +15,9 @@ class UserStatusController < ApplicationController
   def create
     @status = @current_user.user_statuses.build(params[:user_status])
     if @status.save
-      flash[:notice] = "Status saved"
+      flash[:notice] = l(:l_flash_status_saved)
     else
-      flash[:error] = "Could not save update!"
+      flash[:error] = l(:l_flash_could_not_save_update)
     end
 		redirect_to(request.referer)
   end
@@ -41,7 +41,7 @@ class UserStatusController < ApplicationController
     @user = User.find(params[:user_id])
     @statuses = UserStatus.user_history(@user.id)
     unless @user
-      flash[:error] = "Could not find user!"
+      flash[:error] = l(:l_flash_could_not_find_user)
       redirect_to :action => 'index'
     end
   end

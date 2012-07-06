@@ -1,15 +1,15 @@
 <p>
-  <label>Status expire time</label>
+  <label><%= l(:l_user_status_expiry) %></label>
   <%= text_field_tag 'settings[user_status_expiry]', @settings['user_status_expiry'], :size => 8 %>
-  <em>(days)</em>
+  <em>(<%= l(:l_days) %>)</em>
 </p>
 <p>
-  <label>Status history limit</label>
+  <label><%= l(:l_user_status_limit) %></label>
   <%= text_field_tag 'settings[user_status_limit]', @settings['user_status_limit'], :size => 8 %>
-  <em>(defaults to 100)</em>
+  <em>(<%= l(:l_defaults_to) %> 100)</em>
 </p>
 <p>
-  <label>Allowed Roles</label>
+  <label><%= l(:l_allowed_roles) %></label>
   <%= select_tag "settings[user_status_groups]", 
   		options_from_collection_for_select(Group.all, 
   		"id", "name",

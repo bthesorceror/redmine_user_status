@@ -1,4 +1,4 @@
-<% html_title "Latest updates"  %>
+<% html_title l(:l_latest_updates)  %>
 <%= render "header" %>
 <script type="text/javascript">
 <!--
@@ -14,15 +14,15 @@ $JQuery(document).ready(function () {
 </script>
 
 <p>
-  <%= link_to "RSS", {:action => "show_feed", :key => User.current.rss_key, :format => 'atom'}, :class => 'atom' %> |
-	<%= link_to "Historical Order", {:action => "historic"} %> |
-	<%= link_to "Latest Per User", {:action => "index"} %> 
+  <%= link_to l(:l_show_feed), {:action => "show_feed", :key => User.current.rss_key , :format => 'atom' }, :class => 'atom'  %> |
+  <%= link_to l(:l_live_feed), {:action => "live_feed"} %> |
+  <%= link_to l(:l_show_latest), {:action => "index"} %> 
 </p>
 
 <%= render "form" %>
 
 <p>
-  <h3>Live Updating</h3>
+  <h3><%= l(:l_live_feed) %></h3>
   <div id="feed_container">
 	  <%= render "list" %>
 	</div> 

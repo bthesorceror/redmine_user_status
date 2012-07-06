@@ -1,0 +1,20 @@
+<% html_title l(:l_update_history_for) + @user.name %>
+<%= render :partial => 'style'%>
+<% if Setting.gravatar_enabled? %>
+<%= avatar @user, :size => 75%>
+<br />
+<br />
+<% end %>
+<h3><%= l(:l_rss_update_for) + ' ' + @user.name %></h3>
+<%= link_to l(:l_back), :action => 'index'%>
+<br />
+<br />
+<%if !@statuses || @statuses.empty?%>
+  <b><%= l(:l_no_update_found) %></b>
+<%else%>
+  <% @statuses.each do |st| %>
+    <div>
+      <%= render :partial => 'status', :locals => {:status => st} %>
+    </div>
+  <% end %>
+<%end%>

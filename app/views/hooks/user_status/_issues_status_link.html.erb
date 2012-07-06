@@ -1,6 +1,6 @@
 <% if User.current.has_user_status_group? %>
 <p>
-	<%= link_to("I'm Working on This! (updates user status)", 
+	<%= link_to( l(:l_issue_updates_status), 
 		{:controller => :user_status, :action => :create_from_issue, :issue_id => issue.id}, 
 		:class => "icon icon-fav") %>
 </p>
