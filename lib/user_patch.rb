@@ -8,7 +8,7 @@ module UserPatch
       unloadable
       has_many :user_statuses
       
-      named_scope :all_with_statuses, :conditions => {:type => 'User', :status => 1}, 
+      scope :all_with_statuses, :conditions => {:type => 'User', :status => 1},
                                       :order => "lastname, firstname DESC",
                                       :include => :user_statuses
       
