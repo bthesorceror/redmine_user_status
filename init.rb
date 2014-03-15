@@ -1,10 +1,10 @@
 require 'redmine'
 # require 'redcloth' # gem install RedCloth
 
-require 'dispatcher'
+
 require 'user_patch'
 require 'principal_patch'
-Dispatcher.to_prepare do
+ActionDispatch::Callbacks.to_prepare do
   Principal.send(:include, PrincipalPatch) unless Principal.included_modules.include? PrincipalPatch
   User.send(:include, UserPatch) unless User.included_modules.include? UserPatch
 end

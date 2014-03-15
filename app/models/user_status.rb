@@ -2,10 +2,10 @@ class UserStatus < ActiveRecord::Base
   belongs_to :user
   validates_presence_of :status
 
-  named_scope :more_recent_than, lambda {|old_id| { :conditions => ["id > ?", old_id],
+  scope :more_recent_than, lambda {|old_id| { :conditions => ["id > ?", old_id],
   						                                      :order => "created_at DESC" }}
   						                                    
-  named_scope :user_history, lambda { |user_id| { :conditions => {:user_id => user_id}, 
+  scope :user_history, lambda { |user_id| { :conditions => {:user_id => user_id},
                                                   :order => "created_at desc",
                                                   :include => :user }}
 
